@@ -1,0 +1,27 @@
+package com.qxf.library.db;
+
+import java.util.ArrayList;
+
+public class EasyEntity {
+
+    private ArrayList<EasyTable> datas;
+
+    public EasyEntity(){
+        datas = new ArrayList<>();
+    }
+
+    public EasyEntity add(EasyTable t) {
+        datas.add(t);
+        return this;
+    }
+
+    public EasyEntity addAll(ArrayList<EasyTable> ts) {
+        datas.addAll(ts);
+        return this;
+    }
+
+    public ArrayList<EasyTable> getDatas() {
+        return datas;
+    }
+
+}

@@ -1,20 +1,25 @@
 package com.qxf.library.utils;
 
+import android.content.ContentValues;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.qxf.library.constant.EasySQLConstants;
+import com.qxf.library.db.EasyEntity;
 import com.qxf.library.db.EasyTable;
 
 import java.lang.reflect.Field;
 
 public class SQLUtils {
 
+    private static final String TAG = "SQLUtils";
+
     /**
      * 将类转化为创建表对语句
      *
-     * @param classzz 表 类
-     * @param tableName  表名字
-     * @param hasID   是否有id
+     * @param classzz   表 类
+     * @param tableName 表名字
+     * @param hasID     是否有id
      * @return
      */
     public static String getTableSQL(Class<? extends EasyTable> classzz, String tableName, boolean hasID) {
@@ -62,6 +67,73 @@ public class SQLUtils {
 
     }
 
+    public static ContentValues getContentValues(EasyEntity entity, int i) throws IllegalAccessException {
 
+        ContentValues contentValues = new ContentValues();
+
+        Field[] fields = entity.getDatas().get(i).getClass().getDeclaredFields();
+
+        for (Field f : fields) {
+            f.setAccessible(true);
+        }
+
+        //输出p1的所有属性
+        for (Field f : fields) {
+            String field = f.toString().substring(f.toString().lastIndexOf(".") + 1);         //取出属性名称
+            Object o = f.get(entity.getDatas().get(i));
+            String s = f.getType().toString();
+
+            Log.e(TAG, "属性名：" + field + ", 种类 = " + s + ", 种类 = " + o.toString());
+
+            if (TextUtils.equals(s, EasySQLConstants.TYPE_BYTE)) {
+                contentValues.put(field, (byte) o);
+            } else if (TextUtils.equals(s, EasySQLConstants.TYPE_LONG)) {
+                contentValues.put(field, (long) o);
+            } else if (TextUtils.equals(s, EasySQLConstants.TYPE_FLOAT)) {
+                contentValues.put(field, (float) o);
+            } else if (TextUtils.equals(s, EasySQLConstants.TYPE_SHORT)) {
+                contentValues.put(field, (short) o);
+            } else if (TextUtils.equals(s, EasySQLConstants.TYPE_BYTE_ARR)) {
+                contentValues.put(field, (byte[]) o);
+            } else if (TextUtils.equals(s, EasySQLConstants.TYPE_DOUBLE)) {
+                contentValues.put(field, (double) o);
+            } else if (TextUtils.equals(s, EasySQLConstants.TYPE_STRING)) {
+                contentValues.put(field, (String) o);
+            } else if (TextUtils.equals(s, EasySQLConstants.TYPE_BOOLEAN)) {
+                contentValues.put(field, (boolean) o);
+            } else if (TextUtils.equals(s, EasySQLConstants.TYPE_INT)) {
+                contentValues.put(field, (int) o);
+            }
+
+        }
+
+        return contentValues;
+
+    }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

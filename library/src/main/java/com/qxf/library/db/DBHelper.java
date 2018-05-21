@@ -1,5 +1,6 @@
 package com.qxf.library.db;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -8,6 +9,8 @@ import com.qxf.library.constant.EasySQLConstants;
 import com.qxf.library.utils.SQLUtils;
 
 public class DBHelper extends SQLiteOpenHelper {
+
+    private static final String TAG = "DBHelper";
 
     private int id;
     private String name;
@@ -57,22 +60,18 @@ public class DBHelper extends SQLiteOpenHelper {
         return context.deleteDatabase(dbName);
     }
 
-    public void save(EasyEntity<? extends EasyTable> entity) {
+    public void save(EasyEntity entity) {
 
-//        entity.getT();
-//        ContentValues contentValues = new ContentValues();
-//
-//        contentValues.put("_byte", _byte);
-//        contentValues.put("_bytearr", bytes);
-//        contentValues.put("_long", _long);
-//        contentValues.put("_float", _float);
-//        contentValues.put("_short", _short);
-//        contentValues.put("_double", _double);
-//        contentValues.put("_string", _string);
-//        contentValues.put("_boolean", true);
-//        contentValues.put("_integet", _int);
-//
-//        db.insert("a1", null, contentValues);
+        for (int i = 0; i < entity.getDatas().size(); i++) {
+
+            try {
+                ContentValues contentValues = SQLUtils.getContentValues(entity, i);
+                db.insert(entity.getDatas().get(i).getClass().getSimpleName(), null, contentValues);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+
+        }
 
 
     }
