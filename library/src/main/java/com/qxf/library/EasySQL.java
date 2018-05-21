@@ -43,6 +43,13 @@ public class EasySQL {
     }
 
     public DBHelper use(String name) {
+        return use(name, false);
+    }
+
+    public DBHelper use(String name, boolean create) {
+        if (create) {
+            DBRepertory.getInstance().add(name);
+        }
         return DBRepertory.getInstance().get(name);
     }
 

@@ -15,7 +15,6 @@ public class EasySQLConstants {
     public static final String TYPE_INT = "int";
 
 
-
     // ------------------- sql字段（对应上面对数据类型） -----------------------------------
 
     public static final String SQL_BYTE = "byte";
@@ -29,6 +28,9 @@ public class EasySQLConstants {
     public static final String SQL_BYTE_ARR = "blob";
 
     public static final String SQL_TABLE = "create table";
+
+    public static final String SQL_DROP = "drop table";
+    public static final String SQL_DELETE = "delete from";
 
     public static final String SQL_LEFT = "(";
     public static final String SQL_RIGHT = ")";
