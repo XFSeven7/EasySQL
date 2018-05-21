@@ -40,9 +40,13 @@ public class DBRepertory {
         }
 
         DBHelper dbHelper = new DBHelper(EasySQL.context(), dbName, dbList.size());
-        dbHelper.getWritableDatabase();
         dbList.put(dbName, dbHelper);
 
+    }
+
+    public boolean delete(String dbName) {
+        dbList.remove(dbName);
+        return EasySQL.context().deleteDatabase(dbName + ".db");
     }
 
     /**
