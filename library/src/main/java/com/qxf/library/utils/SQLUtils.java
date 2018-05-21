@@ -10,6 +10,9 @@ import com.qxf.library.db.EasyTable;
 
 import java.lang.reflect.Field;
 
+/**
+ * sql工具类
+ */
 public class SQLUtils {
 
     private static final String TAG = "SQLUtils";
@@ -67,6 +70,14 @@ public class SQLUtils {
 
     }
 
+    /**
+     * 根据存储的数据实体，转化为ContentValues
+     *
+     * @param entity 数据实体
+     * @param i      第几个，（其实不想这样写，但是这样写的好处是不用使用class<?>，类似这种形状的代码 hahah）
+     * @return the contentValues
+     * @throws IllegalAccessException 获取数据的时候，可能会出现问题
+     */
     public static ContentValues getContentValues(EasyEntity entity, int i) throws IllegalAccessException {
 
         ContentValues contentValues = new ContentValues();

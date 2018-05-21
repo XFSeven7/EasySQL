@@ -2,6 +2,9 @@ package com.qxf.library.db;
 
 import java.util.ArrayList;
 
+/**
+ * 数据保存类，可以在里面存放各种表
+ */
 public class EasyEntity {
 
     private ArrayList<EasyTable> datas;

@@ -27,6 +27,8 @@ public class EasySQLConstants {
     public static final String SQL_BOOLEAN = "boolean";
     public static final String SQL_BYTE_ARR = "blob";
 
+    // ------------------- sql语法字段 ---------------------------------
+
     public static final String SQL_TABLE = "create table";
 
     public static final String SQL_DROP = "drop table";
