@@ -168,7 +168,12 @@ public class DBHelper extends SQLiteOpenHelper {
      * @param classzz 类表
      */
     public void clearTable(Class<? extends EasyTable> classzz) {
-        db.execSQL(EasySQLConstants.SQL_DELETE + EasySQLConstants.SQL_SPACE + classzz.getSimpleName());
+        try {
+            db.execSQL(EasySQLConstants.SQL_DELETE + EasySQLConstants.SQL_SPACE + classzz.getSimpleName());
+        } catch (SQLException e) {
+            Log.e(TAG, "clearTable: " + classzz.getSimpleName() + "表不存在");
+            e.printStackTrace();
+        }
     }
 
     /**
