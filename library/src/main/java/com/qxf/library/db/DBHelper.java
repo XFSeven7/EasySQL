@@ -118,6 +118,25 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     /**
+     * 更新数据
+     *
+     * @param t           数据实体
+     * @param whereClause sql语句
+     * @param whereArgs   限制条件
+     * @param <T>         the EasyTable
+     */
+    public <T extends EasyTable> void update(T t, String whereClause, String... whereArgs) {
+
+        String tableName = t.getClass().getSimpleName();
+
+        try {
+            db.update(tableName, SQLUtils.getContentValues(t), whereClause, whereArgs);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * 创建表
      *
      * @param classzz   类表

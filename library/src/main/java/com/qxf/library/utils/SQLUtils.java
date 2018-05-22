@@ -82,10 +82,22 @@ public class SQLUtils {
      * @throws IllegalAccessException 获取数据的时候，可能会出现问题
      */
     public static ContentValues getContentValues(EasyEntity entity, int i) throws IllegalAccessException {
+        return getContentValues(entity.getDatas().get(i));
+    }
+
+    /**
+     * 根据存储的数据实体，转化为ContentValues
+     *
+     * @param t   数据实体
+     * @param <T> 表
+     * @return the contentValues
+     * @throws IllegalAccessException 获取数据的时候，可能会出现问题
+     */
+    public static <T extends EasyTable> ContentValues getContentValues(T t) throws IllegalAccessException {
 
         ContentValues contentValues = new ContentValues();
 
-        Field[] fields = entity.getDatas().get(i).getClass().getDeclaredFields();
+        Field[] fields = t.getClass().getDeclaredFields();
 
         for (Field f : fields) {
             f.setAccessible(true);
@@ -94,7 +106,7 @@ public class SQLUtils {
         //输出p1的所有属性
         for (Field f : fields) {
             String field = f.toString().substring(f.toString().lastIndexOf(".") + 1);         //取出属性名称
-            Object o = f.get(entity.getDatas().get(i));
+            Object o = f.get(t);
             String s = f.getType().toString();
 
             if (TextUtils.equals(s, EasySQLConstants.TYPE_BYTE)) {
