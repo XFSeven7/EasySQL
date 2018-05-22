@@ -2,11 +2,14 @@ package com.qxf.library.db;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.qxf.library.constant.EasySQLConstants;
 import com.qxf.library.utils.SQLUtils;
+
+import java.util.ArrayList;
 
 /**
  * 数据库操作类
@@ -90,6 +93,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     /**
      * 保存数据
+     *
      * @param entity
      */
     public void save(EasyEntity entity) {
@@ -104,7 +108,6 @@ public class DBHelper extends SQLiteOpenHelper {
             }
 
         }
-
 
     }
 
@@ -137,6 +140,34 @@ public class DBHelper extends SQLiteOpenHelper {
      */
     public void clearTable(Class<? extends EasyTable> classzz) {
         db.execSQL(EasySQLConstants.SQL_DELETE + EasySQLConstants.SQL_SPACE + classzz.getSimpleName());
+    }
+
+    /**
+     * 得到指定表中数据
+     *
+     * @param classzz 指定表
+     * @param <T>     数据库表
+     * @return 集合数据
+     */
+    public <T extends EasyTable> ArrayList<T> retrieve(Class<T> classzz) {
+
+        Cursor cursor = db.query(classzz.getSimpleName().toLowerCase(), null, null, null, null, null, null);
+
+        ArrayList<T> query = new ArrayList<>();
+
+        if (cursor != null) {
+
+            try {
+                query = SQLUtils.query(classzz, cursor);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return query;
+
     }
 
 }

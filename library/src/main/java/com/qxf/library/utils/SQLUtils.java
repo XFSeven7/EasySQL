@@ -1,14 +1,15 @@
 package com.qxf.library.utils;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.qxf.library.constant.EasySQLConstants;
 import com.qxf.library.db.EasyEntity;
 import com.qxf.library.db.EasyTable;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 
 /**
  * sql工具类
@@ -94,10 +95,9 @@ public class SQLUtils {
             Object o = f.get(entity.getDatas().get(i));
             String s = f.getType().toString();
 
-            Log.e(TAG, "属性名：" + field + ", 种类 = " + s + ", 种类 = " + o.toString());
-
             if (TextUtils.equals(s, EasySQLConstants.TYPE_BYTE)) {
-                contentValues.put(field, (byte) o);
+                byte[] bytes = {(byte) o};
+                contentValues.put(field, bytes);// 由于cursor不能直接获取byte，所有这里使用byte[]的方式存储
             } else if (TextUtils.equals(s, EasySQLConstants.TYPE_LONG)) {
                 contentValues.put(field, (long) o);
             } else if (TextUtils.equals(s, EasySQLConstants.TYPE_FLOAT)) {
@@ -119,6 +119,86 @@ public class SQLUtils {
         }
 
         return contentValues;
+
+    }
+
+    /**
+     * 查询数据
+     *
+     * @param classzz 待查询的表
+     * @param cursor  游标
+     * @param <T>     数据库表
+     * @return 数据集合
+     * @throws IllegalAccessException 非法访问异常
+     * @throws InstantiationException 反射实例异常
+     */
+    public static <T extends EasyTable> ArrayList<T> query(Class<T> classzz, Cursor cursor) throws IllegalAccessException, InstantiationException {
+
+        ArrayList<T> datas = new ArrayList<>();
+
+        cursor.moveToFirst();
+
+        if (cursor.moveToFirst()) {
+
+            do {
+
+                Field[] declaredFields = classzz.getDeclaredFields();
+
+                T t = classzz.newInstance();
+
+                for (Field f : declaredFields) {
+
+                    f.setAccessible(true);
+
+                    // 取出属性名称
+                    String field = f.toString().substring(f.toString().lastIndexOf(".") + 1);
+                    // 属性类型
+                    String s = f.getType().toString();
+
+                    if (TextUtils.equals(s, EasySQLConstants.TYPE_BYTE)) {
+                        byte _byte = cursor.getBlob(cursor.getColumnIndex(field))[0];
+                        f.set(t, _byte);
+                    } else if (TextUtils.equals(s, EasySQLConstants.TYPE_LONG)) {
+                        long _long = cursor.getLong(cursor.getColumnIndex(field));
+                        f.set(t, _long);
+                    } else if (TextUtils.equals(s, EasySQLConstants.TYPE_FLOAT)) {
+                        float _float = cursor.getFloat(cursor.getColumnIndex(field));
+                        f.set(t, _float);
+                    } else if (TextUtils.equals(s, EasySQLConstants.TYPE_SHORT)) {
+                        short _short = cursor.getShort(cursor.getColumnIndex(field));
+                        f.set(t, _short);
+                    } else if (TextUtils.equals(s, EasySQLConstants.TYPE_BYTE_ARR)) {
+                        byte[] _byteArr = cursor.getBlob(cursor.getColumnIndex(field));
+                        f.set(t, _byteArr);
+                    } else if (TextUtils.equals(s, EasySQLConstants.TYPE_DOUBLE)) {
+                        double _double = cursor.getDouble(cursor.getColumnIndex(field));
+                        f.set(t, _double);
+                    } else if (TextUtils.equals(s, EasySQLConstants.TYPE_STRING)) {
+                        String _string = cursor.getString(cursor.getColumnIndex(field));
+                        f.set(t, _string);
+                    } else if (TextUtils.equals(s, EasySQLConstants.TYPE_BOOLEAN)) {
+                        int _int = cursor.getInt(cursor.getColumnIndex(field));
+                        boolean _boolean;
+                        if (_int == 0) {
+                            _boolean = false;
+                        } else {
+                            _boolean = true;
+                        }
+                        f.set(t, _boolean);
+                    } else if (TextUtils.equals(s, EasySQLConstants.TYPE_INT)) {
+                        int _int = cursor.getInt(cursor.getColumnIndex(field));
+                        f.set(t, _int);
+                    }
+
+                }
+
+                datas.add(t);
+
+            } while (cursor.moveToNext());
+
+        }
+
+        return datas;
 
     }
 
