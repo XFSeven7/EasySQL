@@ -3,7 +3,6 @@ package com.qxf.library;
 import com.qxf.library.db.DBHelper;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Set;
 
 public class DBRepertory {
@@ -78,8 +77,8 @@ public class DBRepertory {
      *
      * @return
      */
-    public HashSet<String> listName() {
-        return (HashSet<String>) dbList.keySet();
+    public Set<String> listName() {
+        return dbList.keySet();
     }
 
 }

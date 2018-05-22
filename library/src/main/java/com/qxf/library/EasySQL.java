@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.qxf.library.db.DBHelper;
 
-import java.util.HashSet;
+import java.util.Set;
 
 /**
  * 牛逼哄哄的EasySQL，很多操作都要靠这个类，YEAH!
@@ -90,7 +90,7 @@ public class EasySQL {
      *
      * @return 集合展现数据库名字列表
      */
-    public HashSet<String> listName() {
+    public Set<String> listName() {
         return DBRepertory.getInstance().listName();
     }
 
