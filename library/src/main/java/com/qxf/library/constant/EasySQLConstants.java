@@ -29,7 +29,7 @@ public class EasySQLConstants {
 
     // ------------------- sql语法字段 ---------------------------------
 
-    public static final String SQL_TABLE = "create table";
+    public static final String SQL_TABLE = "create table if not exists";
 
     public static final String SQL_DROP = "drop table";
     public static final String SQL_DELETE = "delete from";

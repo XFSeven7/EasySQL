@@ -2,7 +2,9 @@ package com.qxf.library.utils;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteException;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.qxf.library.constant.EasySQLConstants;
 import com.qxf.library.db.EasyEntity;
@@ -136,7 +138,13 @@ public class SQLUtils {
 
         ArrayList<T> datas = new ArrayList<>();
 
-        cursor.moveToFirst();
+        try {
+            cursor.moveToFirst();
+        } catch (SQLiteException e) {
+            Log.e(TAG, "query: " + classzz.getSimpleName() + "表不存在");
+            e.printStackTrace();
+            return datas;
+        }
 
         if (cursor.moveToFirst()) {
 

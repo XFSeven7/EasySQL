@@ -3,8 +3,11 @@ package com.qxf.library.db;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.qxf.library.constant.EasySQLConstants;
 import com.qxf.library.utils.SQLUtils;
@@ -104,7 +107,10 @@ public class DBHelper extends SQLiteOpenHelper {
                 ContentValues contentValues = SQLUtils.getContentValues(entity, i);
                 db.insert(entity.getDatas().get(i).getClass().getSimpleName(), null, contentValues);
             } catch (IllegalAccessException e) {
+                Log.e(TAG, "save: " + entity.getDatas().get(i).getClass().getSimpleName() + "表不存在");
                 e.printStackTrace();
+            } catch (SQLException e) {
+                Log.e(TAG, "save: " + entity.getDatas().get(i).getClass().getSimpleName() + "表不存在");
             }
 
         }
@@ -130,7 +136,11 @@ public class DBHelper extends SQLiteOpenHelper {
      * @param classzz 类表
      */
     public void deleteTable(Class<? extends EasyTable> classzz) {
-        db.execSQL(EasySQLConstants.SQL_DROP + EasySQLConstants.SQL_SPACE + classzz.getSimpleName());
+        try {
+            db.execSQL(EasySQLConstants.SQL_DROP + EasySQLConstants.SQL_SPACE + classzz.getSimpleName());
+        } catch (SQLException e) {
+            Log.e(TAG, "deleteTable: 该表不存在");
+        }
     }
 
     /**
@@ -151,9 +161,16 @@ public class DBHelper extends SQLiteOpenHelper {
      */
     public <T extends EasyTable> ArrayList<T> retrieve(Class<T> classzz) {
 
-        Cursor cursor = db.query(classzz.getSimpleName().toLowerCase(), null, null, null, null, null, null);
-
         ArrayList<T> query = new ArrayList<>();
+
+        Cursor cursor = null;
+
+        try {
+            cursor = db.query(classzz.getSimpleName().toLowerCase(), null, null, null, null, null, null);
+        } catch (SQLiteException e) {
+            Log.e(TAG, "retrieve: 该表不存在");
+            return query;
+        }
 
         if (cursor != null) {
 
@@ -168,6 +185,24 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return query;
 
+    }
+
+    /**
+     * 删除指定表中的数据
+     *
+     * @param classzz     指定表
+     * @param whereClause sql语句
+     * @param whereArgs   限制
+     * @param <T>         the EasyTable
+     */
+    public <T extends EasyTable> void delete(Class<T> classzz, String whereClause, String... whereArgs) {
+
+        try {
+            db.delete(classzz.getSimpleName(), whereClause, whereArgs);
+        } catch (SQLException e) {
+            Log.e(TAG, "delete: " + classzz.getSimpleName() + "表不存在");
+            e.printStackTrace();
+        }
     }
 
 }
