@@ -2,6 +2,8 @@ package com.qxf.easysql;
 
 import com.qxf.library.db.EasyTable;
 
+import java.util.Arrays;
+
 public class Table1 extends EasyTable {
 
     private byte _byte;
@@ -99,5 +101,20 @@ public class Table1 extends EasyTable {
 
     public void set_int(int _int) {
         this._int = _int;
+    }
+
+    @Override
+    public String toString() {
+        return "Table1{" +
+                "_byte=" + _byte +
+                ", _long=" + _long +
+                ", _float=" + _float +
+                ", _short=" + _short +
+                ", bytes=" + Arrays.toString(bytes) +
+                ", _double=" + _double +
+                ", _string='" + _string + '\'' +
+                ", _bit=" + _bit +
+                ", _int=" + _int +
+                '}';
     }
 }

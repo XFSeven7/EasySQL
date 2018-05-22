@@ -7,6 +7,9 @@ public class Table2 extends EasyTable {
     private String name;
     private int age;
 
+    public Table2() {
+    }
+
     public Table2(String name, int age) {
         this.name = name;
         this.age = age;
@@ -26,5 +29,13 @@ public class Table2 extends EasyTable {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    @Override
+    public String toString() {
+        return "Table2{" +
+                "name='" + name + '\'' +
+                ", age=" + age +
+                '}';
     }
 }

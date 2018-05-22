@@ -12,42 +12,129 @@
         android:id="@+id/dbname"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="数据库名字" />
+        android:hint="被操作的数据库的名字" />
 
-    <Button
-        android:id="@+id/create"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="创建数据库" />
+        android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/delete"
+        <Button
+            android:id="@+id/create"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="创建数据库" />
+
+        <Button
+            android:id="@+id/delete"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="删除数据库" />
+
+        <Button
+            android:id="@+id/checkdb"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="查看数据库" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="删除数据库" />
+        android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/createTable"
+        <Button
+            android:id="@+id/createTable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="创建表(创建3个)" />
+
+        <Button
+            android:id="@+id/deleteTable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="删除第一个表" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="创建表" />
+        android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/deleteTable"
+        <Button
+            android:id="@+id/save1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="存储数据(表1)" />
+
+        <Button
+            android:id="@+id/save2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="存储数据(表2)" />
+
+        <Button
+            android:id="@+id/save3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="存储数据(表3)" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="删除表" />
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/check1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="查询数据(表1)" />
+
+        <Button
+            android:id="@+id/check2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="查询数据(表2)" />
+
+        <Button
+            android:id="@+id/check3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="查询数据(表3)" />
+
+    </LinearLayout>
+
 
     <Button
-        android:id="@+id/save"
+        android:id="@+id/deleteData"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="存储数据" />
+        android:text="删除某些数据" />
 
-    <Button
-        android:id="@+id/check"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="查询数据" />
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/show"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </ScrollView>
 
 </LinearLayout>
