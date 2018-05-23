@@ -18,7 +18,7 @@ allprojects {
 
 ```
 dependencies {
-	implementation 'com.github.User:Repo:Tag'
+    implementation 'com.github.qixuefeng:EasySQL:0.0.1'
 }
 ```
 
