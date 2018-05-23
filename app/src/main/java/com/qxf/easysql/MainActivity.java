@@ -42,34 +42,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         /**
          *
-         * 初始化EasySQL
-         * EasySQL.init(context);                                                                                   搞定
-         *
          * 创建数据库
-         * EasySQL.createDB(String dbname)不用加.db                                                                  搞定
+         * EasySQL.with(this).createDB(dbName);不用加.db
          *
-         * 创建表
-         * EasySQL.createTable(class<? extend EasyTable>) 默认带ID                                 TODO 默认ID还未完成
-         * EasySQL.createTable(class<? extend EasyTable>, boolean hasID) 是否携带ID
+         * 使用指定数据库
+         * EasySQL.with(this).use(dbName);
+         *
+         * 在指定数据库下创建表
+         * EasySQL.with(this).use(dbName).createTable(表实体.class)
          *
          * 删除表
-         * EasySQL.use(String dbname).deleteTable(class<? extend EasyTable>) 删除某数据库中某表                         搞定
-         * EasySQL.use(String dbname).clearTable(class<? extend EasyTable>) 清除某数据库中某表的数据                     搞定
+         * EasySQL.with(this).use(dbName).deleteTable(class<? extend EasyTable>);
          *
-         * 增删改查 某数据库中某表记录
-         * EasySQL.use(String dbname).save(new class<? extend EasyTable>) 添加某表记录                                 搞定
-         * EasySQL.use(String dbname).delete(new class<? extend EasyTable>) 删除某表记录
+         * 清空表
+         * EasySQL.with(this).use(dbName).clearTable(class<? extend EasyTable>);
          *
-         * EasySQL.use(String dbname).update(new class<? extend EasyTable>, int id) 更新某表的某条记录
-         * EasySQL.use(String dbname).update(new class<? extend EasyTable>, int id) 更新某表的某条记录
+         * 增
+         * EasySQL.with(this).use(dbName).save(EasyEntity entity);
          *
-         * new class<? extend EasyTable> = EasySQL.use(String dbname).check(new class<? extend EasyTable>) 查询某表记录
+         * 删
+         * EasySQL.with(this).use(dbName).delete(TypeEntity.class, "_short = ?", "2");
          *
-         * Arrlist<BD> =  EasySQL.listDB() 获取数据库列表
-         * Arrlist<Table> = EasySQL.use(String name).listTable() 获取某数据库所有表
+         * 改
+         * EasySQL.with(this).use(dbName).update(typeEntity1, "_short = ?", "2");
          *
-         * table.getDB 通过表实体得到属于哪个数据库
-         * Arrlist<DB> = table.getDB 也许在多个数据库中存在相同的表
+         * 查
+         * EasySQL.with(this).use(dbName).retrieve(NormalTable1.class);
+         *
+         * 获取数据库列表
+         * Arrlist<BD> =  EasySQL.listDB()
+         *
+         * 获取某数据库所有表
+         * Arrlist<Table> = EasySQL.use(dbName).listTable()
          *
          */
 

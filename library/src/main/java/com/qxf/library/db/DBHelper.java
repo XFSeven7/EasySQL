@@ -71,6 +71,45 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     /**
+     * 创建表
+     *
+     * @param classzz   类表
+     * @param tableName 表名
+     * @return 数据库操作类
+     */
+    private DBHelper createTable(Class<? extends EasyTable> classzz, String tableName) {
+        return createTable(classzz, tableName, true);
+    }
+
+    /**
+     * 创建表
+     *
+     * @param classzz 类表
+     * @param hasID   是否携带自增长ID
+     * @return 数据库操作类
+     */
+    public DBHelper createTable(Class<? extends EasyTable> classzz, boolean hasID) {
+        return createTable(classzz, classzz.getSimpleName(), hasID);
+    }
+
+    /**
+     * 创建表
+     *
+     * @param classzz   类表
+     * @param tableName 表名
+     * @param hasID     是否携带自增长ID
+     * @return 数据库操作类
+     */
+    private DBHelper createTable(Class<? extends EasyTable> classzz, String tableName, boolean hasID) {
+        if (TextUtils.equals("table", tableName.toLowerCase())) {
+            throw new SQLiteException("表名不能为table");
+        }
+        String tableSQL = SQLUtils.getTableSQL(classzz, tableName, hasID);
+        db.execSQL(tableSQL);
+        return this;
+    }
+
+    /**
      * 删除数据库
      *
      * @param dbName 数据库名字
@@ -152,21 +191,6 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
-    /**
-     * 创建表
-     *
-     * @param classzz   类表
-     * @param tableName 表名
-     * @return 数据库操作类
-     */
-    public DBHelper createTable(Class<? extends EasyTable> classzz, String tableName) {
-        if (TextUtils.equals("table", tableName.toLowerCase())) {
-            throw new SQLiteException("表名不能为table");
-        }
-        String tableSQL = SQLUtils.getTableSQL(classzz, tableName, true);
-        db.execSQL(tableSQL);
-        return this;
-    }
 
     /**
      * 删除表
