@@ -7,6 +7,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.qxf.library.constant.EasySQLConstants;
@@ -22,11 +23,6 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String TAG = "DBHelper";
 
     /**
-     * 数据库ID
-     */
-    private int id;
-
-    /**
      * 数据库名字
      */
     private String name;
@@ -38,9 +34,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private Context context;
 
-    public DBHelper(Context context, String name, int id) {
-        super(context, name + ".db", null, 1);
-        this.id = id;
+    public DBHelper(Context context, String name) {
+        super(context, name, null, 1);
         this.context = context;
         this.name = name;
         db = getWritableDatabase();
@@ -53,15 +48,6 @@ public class DBHelper extends SQLiteOpenHelper {
      */
     public String getName() {
         return name;
-    }
-
-    /**
-     * 获取数据库ID
-     *
-     * @return 数据库ID
-     */
-    public int getId() {
-        return id;
     }
 
     @Override
@@ -107,10 +93,16 @@ public class DBHelper extends SQLiteOpenHelper {
 
         if (cursor.moveToFirst()) {
 
-            while (cursor.moveToNext()) {
+            do {
+
                 String _string = cursor.getString(cursor.getColumnIndex("name"));
-                data.add(_string);
-            }
+                if (!TextUtils.equals(_string, "sqlite_sequence")) {
+                    if (!TextUtils.equals(_string, "android_metadata")) {
+                        data.add(_string);
+                    }
+                }
+
+            } while (cursor.moveToNext());
 
         }
 
@@ -168,6 +160,9 @@ public class DBHelper extends SQLiteOpenHelper {
      * @return 数据库操作类
      */
     public DBHelper createTable(Class<? extends EasyTable> classzz, String tableName) {
+        if (TextUtils.equals("table", tableName.toLowerCase())) {
+            throw new SQLiteException("表名不能为table");
+        }
         String tableSQL = SQLUtils.getTableSQL(classzz, tableName, true);
         db.execSQL(tableSQL);
         return this;

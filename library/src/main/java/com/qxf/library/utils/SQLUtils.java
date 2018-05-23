@@ -69,9 +69,9 @@ public class SQLUtils {
 
         if (hasID) {
             sql += tableName + EasySQLConstants.SQL_LEFT + EasySQLConstants.SQL_AUTO_ID + filed.toString() + EasySQLConstants.SQL_RIGHT;
+        } else {
+            sql += tableName + EasySQLConstants.SQL_LEFT + filed.toString() + EasySQLConstants.SQL_RIGHT;
         }
-        sql += tableName + EasySQLConstants.SQL_LEFT + filed.toString() + EasySQLConstants.SQL_RIGHT;
-
 
         return sql;
 

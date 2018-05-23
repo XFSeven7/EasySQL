@@ -1,26 +1,40 @@
 package com.qxf.library;
 
+import android.content.Context;
+import android.text.TextUtils;
+
+import com.qxf.library.constant.EasySQLConstants;
 import com.qxf.library.db.DBHelper;
+import com.qxf.library.utils.SharedPreferencesUtils;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * 数据库管理仓库
+ */
 public class DBRepertory {
-
-    private static final String TAG = "DBRepertory";
 
     private static DBRepertory instance;
 
     private HashMap<String, DBHelper> dbList = new HashMap<>();
 
-    private DBRepertory() {
+    private DBRepertory(Context context) {
+
+        Set<String> stringSet = getDB();
+
+        for (String s : stringSet) {
+            dbList.put(s, new DBHelper(context, s));
+        }
+
     }
 
-    public static DBRepertory getInstance() {
+    public static DBRepertory getInstance(Context context) {
         if (instance == null) {
             synchronized (DBRepertory.class) {
                 if (instance == null) {
-                    instance = new DBRepertory();
+                    instance = new DBRepertory(context);
                 }
             }
         }
@@ -32,20 +46,34 @@ public class DBRepertory {
      *
      * @param dbName 数据库名字
      */
-    public void add(String dbName) {
+    public void add(String dbName, Context context) {
 
-        if (check(dbName)) {
-            return;
-        }
+        if (TextUtils.isEmpty(dbName))
+            dbName = EasySQLConstants.SQL_DEFAULT_NAME + EasySQLConstants.SQL_END_TABLE;
+        if (!dbName.endsWith(EasySQLConstants.SQL_END_TABLE))
+            dbName += EasySQLConstants.SQL_END_TABLE;
 
-        DBHelper dbHelper = new DBHelper(EasySQL.context(), dbName, dbList.size());
+        if (check(dbName)) return;
+
+        DBHelper dbHelper = new DBHelper(context, dbName);
         dbList.put(dbName, dbHelper);
+
+        saveDB(dbName);
 
     }
 
-    public boolean delete(String dbName) {
+    /**
+     * 删除数据库
+     *
+     * @param dbName  数据库名字
+     * @param context the context
+     * @return 是否删除成功
+     */
+    public boolean delete(String dbName, Context context) {
+        dbName += EasySQLConstants.SQL_END_TABLE;
         dbList.remove(dbName);
-        return EasySQL.context().deleteDatabase(dbName + ".db");
+        removeDB(dbName);
+        return context.deleteDatabase(dbName + EasySQLConstants.SQL_END_TABLE);
     }
 
     /**
@@ -55,6 +83,10 @@ public class DBRepertory {
      * @return the db
      */
     public DBHelper get(String dbName) {
+        if (TextUtils.isEmpty(dbName)) {
+            dbName = EasySQLConstants.SQL_DEFAULT_NAME;
+        }
+        dbName += EasySQLConstants.SQL_END_TABLE;
         if (check(dbName)) {
             return dbList.get(dbName);
         }
@@ -79,6 +111,36 @@ public class DBRepertory {
      */
     public Set<String> listName() {
         return dbList.keySet();
+    }
+
+    private void saveDB(String dbName) {
+        Set<String> db = getDB();
+        db.add(dbName);
+        SharedPreferencesUtils.putStringSet(EasySQLConstants.EASYSQL_SHARED, EasySQLConstants.EASYSQL_SHARED_DB, db);
+    }
+
+    /**
+     * 获取已存在的数据库列表
+     *
+     * @return 数据库名字列表
+     */
+    private Set<String> getDB() {
+        Set<String> stringSet = SharedPreferencesUtils.getStringSet(EasySQLConstants.EASYSQL_SHARED, EasySQLConstants.EASYSQL_SHARED_DB, null);
+        if (stringSet == null) {
+            SharedPreferencesUtils.putStringSet(EasySQLConstants.EASYSQL_SHARED, EasySQLConstants.EASYSQL_SHARED_DB, new HashSet<String>());
+        }
+        return SharedPreferencesUtils.getStringSet(EasySQLConstants.EASYSQL_SHARED, EasySQLConstants.EASYSQL_SHARED_DB, null);
+    }
+
+    /**
+     * 删除数据库
+     *
+     * @param dbName
+     */
+    private void removeDB(String dbName) {
+        Set<String> db = getDB();
+        db.remove(dbName);
+        SharedPreferencesUtils.putStringSet(EasySQLConstants.EASYSQL_SHARED, EasySQLConstants.EASYSQL_SHARED_DB, db);
     }
 
 }

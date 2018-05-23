@@ -33,6 +33,10 @@ public class EasySQLConstants {
 
     public static final String SQL_AUTO_ID = "easysql_id integer primary key autoincrement,";
 
+    public static final String SQL_DEFAULT_NAME = "easysql";
+
+    public static final String SQL_END_TABLE = ".db";
+
     public static final String SQL_DROP = "drop table";
     public static final String SQL_DELETE = "delete from";
 
@@ -41,5 +45,11 @@ public class EasySQLConstants {
 
     public static final String SQL_SPACE = " ";
     public static final String SQL_COMMA = ",";
+
+    // ------------------- shared常量 ------------------------------
+
+    public static final String EASYSQL_SHARED = "easysql";
+    public static final String EASYSQL_SHARED_DB = "easysql_shared_db";
+
 
 }

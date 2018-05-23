@@ -1,8 +1,10 @@
 package com.qxf.library;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 
 import com.qxf.library.db.DBHelper;
+import com.qxf.library.utils.SharedPreferencesUtils;
 
 import java.util.Set;
 
@@ -11,23 +13,12 @@ import java.util.Set;
  */
 public class EasySQL {
 
-    private static Context mContext;
+    private Context mContext;
 
+    @SuppressLint("StaticFieldLeak")
     private static EasySQL easySQL;
 
-    public static Context context() {
-        return mContext;
-    }
-
-    private EasySQL() {
-    }
-
-    /**
-     * 初始化EasySQL
-     *
-     * @param context the context
-     */
-    public static void init(Context context) {
+    private EasySQL(Context context) {
         mContext = context;
     }
 
@@ -36,8 +27,9 @@ public class EasySQL {
      *
      * @return 本类的单例
      */
-    public static EasySQL with() {
-        return EasySQLPlugins.onAssembly(check());
+    public static EasySQL with(Context context) {
+        SharedPreferencesUtils.init(context);
+        return EasySQLPlugins.onAssembly(instance(context));
     }
 
     /**
@@ -47,8 +39,8 @@ public class EasySQL {
      * @return 本类的单例
      */
     public EasySQL createDB(String name) {
-        DBRepertory.getInstance().add(name);
-        return EasySQLPlugins.onAssembly(new EasySQL());
+        DBRepertory.getInstance(mContext).add(name, mContext);
+        return this;
     }
 
     /**
@@ -58,7 +50,7 @@ public class EasySQL {
      * @return 是否成功删除
      */
     public boolean deleteDatabase(String dbName) {
-        return DBRepertory.getInstance().delete(dbName);
+        return DBRepertory.getInstance(mContext).delete(dbName, mContext);
     }
 
     /**
@@ -80,9 +72,9 @@ public class EasySQL {
      */
     public DBHelper use(String name, boolean create) {
         if (create) {
-            DBRepertory.getInstance().add(name);
+            DBRepertory.getInstance(mContext).add(name, mContext);
         }
-        return DBRepertory.getInstance().get(name);
+        return DBRepertory.getInstance(mContext).get(name);
     }
 
     /**
@@ -91,14 +83,14 @@ public class EasySQL {
      * @return 集合展现数据库名字列表
      */
     public Set<String> listName() {
-        return DBRepertory.getInstance().listName();
+        return DBRepertory.getInstance(mContext).listName();
     }
 
-    private static EasySQL check() {
+    private static EasySQL instance(Context context) {
         if (easySQL == null) {
             synchronized (EasySQL.class) {
                 if (easySQL == null) {
-                    easySQL = new EasySQL();
+                    easySQL = new EasySQL(context);
                 }
             }
         }
