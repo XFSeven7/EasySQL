@@ -1,6 +1,27 @@
 # EasySQL
 使用起来很简单的sql工具
 
+使用方法
+--
+
+ - gradle
+
+第一步：将其添加到存储库末尾的根build.gradle中：
+```
+allprojects {
+	repositories {
+		maven { url 'https://jitpack.io' }
+	}
+}
+```
+第二步：添加到依赖
+
+```
+dependencies {
+	implementation 'com.github.User:Repo:Tag'
+}
+```
+
 
 数据库操作
 ---
