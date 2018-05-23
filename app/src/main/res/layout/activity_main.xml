@@ -126,6 +126,24 @@
         android:layout_height="wrap_content"
         android:text="删除某些数据" />
 
+    <Button
+        android:id="@+id/update"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="修改(表1的数据)" />
+
+    <Button
+        android:id="@+id/clear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="清空表中所有数据(表1)" />
+
+    <Button
+        android:id="@+id/tableList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="获取指定数据库中的所有表" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

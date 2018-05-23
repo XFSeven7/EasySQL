@@ -2,15 +2,15 @@ package com.qxf.easysql;
 
 import com.qxf.library.db.EasyTable;
 
-public class Table2 extends EasyTable {
+public class NormalTable1 extends EasyTable {
 
     private String name;
     private int age;
 
-    public Table2() {
+    public NormalTable1() {
     }
 
-    public Table2(String name, int age) {
+    public NormalTable1(String name, int age) {
         this.name = name;
         this.age = age;
     }

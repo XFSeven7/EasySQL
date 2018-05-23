@@ -4,7 +4,10 @@ import com.qxf.library.db.EasyTable;
 
 import java.util.Arrays;
 
-public class Table1 extends EasyTable {
+/**
+ * 支持的所有数据类型
+ */
+public class TypeEntity extends EasyTable {
 
     private byte _byte;
     private long _long;
@@ -16,10 +19,10 @@ public class Table1 extends EasyTable {
     private boolean _bit;
     private int _int;
 
-    public Table1() {
+    public TypeEntity() {
     }
 
-    public Table1(byte _byte, long _long, float _float, short _short, byte[] bytes, double _double, String _string, boolean _bit, int _int) {
+    public TypeEntity(byte _byte, long _long, float _float, short _short, byte[] bytes, double _double, String _string, boolean _bit, int _int) {
         this._byte = _byte;
         this._long = _long;
         this._float = _float;

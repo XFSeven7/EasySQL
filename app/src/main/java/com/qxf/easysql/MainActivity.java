@@ -30,14 +30,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button check2;
     private Button check3;
     private Button checkdb;
+    private Button update;
+    private Button clear;
+    private Button tableList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
-
-        EasySQL.init(this);
 
         /**
          *
@@ -103,81 +104,89 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         check3.setOnClickListener(this);
         checkdb = (Button) findViewById(R.id.checkdb);
         checkdb.setOnClickListener(this);
+        update = (Button) findViewById(R.id.update);
+        update.setOnClickListener(this);
+        clear = (Button) findViewById(R.id.clear);
+        clear.setOnClickListener(this);
+        tableList = (Button) findViewById(R.id.tableList);
+        tableList.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-        String trim = dbname.getText().toString().trim();
+
+        String dbName = dbname.getText().toString().trim();
 
         switch (v.getId()) {
 
             //  创建数据库
             case R.id.create:
-                EasySQL.with().createDB(trim);
+                EasySQL.with(this).createDB(dbName);
                 break;
 
             // 删除数据库
             case R.id.delete:
-                EasySQL.with().deleteDatabase(trim);
+                EasySQL.with(this).deleteDatabase(dbName);
                 break;
 
             // 创建表
             case R.id.createTable:
-                EasySQL.with().use(trim).createTable(Table1.class).createTable(Table2.class).createTable(Table3.class);
+                EasySQL.with(this).use(dbName).createTable(TypeEntity.class).createTable(NormalTable1.class).createTable(NormalTable2.class);
                 break;
 
             // 删除表
             case R.id.deleteTable:
-                EasySQL.with().use(trim).deleteTable(Table1.class);
+                EasySQL.with(this).use(dbName).deleteTable(TypeEntity.class);
                 break;
 
             // 删除部分数据
             case R.id.deleteData:
-                EasySQL.with().use(trim).delete(Table1.class, "_short = ?", "2");
+                EasySQL.with(this).use(dbName).delete(TypeEntity.class, "_short = ?", "2");
                 break;
 
             // 给表1存储数据
             case R.id.save1:
                 EasyEntity table1EasyEntity = new EasyEntity();
 
-                Table1 table1 = new Table1();
+                TypeEntity typeEntity = new TypeEntity();
 
-                table1.set_bit(true);
+                typeEntity.set_bit(true);
                 byte b = 1;
-                table1.set_byte(b);
-                table1.set_double(2.2);
-                table1.set_float(1.7f);
-                table1.set_int(22);
-                table1.set_long(71625716l);
+                typeEntity.set_byte(b);
+                typeEntity.set_double(2.2);
+                typeEntity.set_float(1.7f);
+                typeEntity.set_int(22);
+                typeEntity.set_long(71625716l);
                 short i = 2;
-                table1.set_short(i);
-                table1.set_string("jghk");
+                typeEntity.set_short(i);
+                typeEntity.set_string("jghk");
                 byte[] bytes = {1, 2, 3};
-                table1.setBytes(bytes);
+                typeEntity.setBytes(bytes);
 
-                table1EasyEntity.add(table1);
+                table1EasyEntity.add(typeEntity);
 
-                EasySQL.with().use(trim).save(table1EasyEntity);
+                EasySQL.with(this).use(dbName).save(table1EasyEntity);
+
                 break;
 
             // 给表2存储数据
             case R.id.save2:
                 EasyEntity easyEntity = new EasyEntity();
-                easyEntity.add(new Table2("张三", 18));
-                EasySQL.with().use(trim).save(easyEntity);
+                easyEntity.add(new NormalTable1("张三", 18));
+                EasySQL.with(this).use(dbName).save(easyEntity);
                 break;
 
             // 给表3存储数据
             case R.id.save3:
-                EasySQL.with().use(trim).save(new EasyEntity().add(new Table3(4, "李四")).add(new Table3(5, "王五")));
+                EasySQL.with(this).use(dbName).save(new EasyEntity().add(new NormalTable2(4, "李四")).add(new NormalTable2(5, "王五")));
                 break;
 
             // 检查表1的数据
             case R.id.check1:
 
-                ArrayList<Table1> retrieve1 = EasySQL.with().use(trim).retrieve(Table1.class);
+                ArrayList<TypeEntity> retrieve1 = EasySQL.with(this).use(dbName).retrieve(TypeEntity.class);
 
-                String result1 = "当前数据库：" + trim + "\n";
+                String result1 = "当前数据库：" + dbName + "\n";
 
                 for (int j = 0; j < retrieve1.size(); j++) {
                     String s = retrieve1.get(j).toString();
@@ -191,9 +200,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             // 检查表2的数据
             case R.id.check2:
 
-                ArrayList<Table2> retrieve2 = EasySQL.with().use(trim).retrieve(Table2.class);
+                ArrayList<NormalTable1> retrieve2 = EasySQL.with(this).use(dbName).retrieve(NormalTable1.class);
 
-                String result2 = "当前数据库：" + trim + "\n";
+                String result2 = "当前数据库：" + dbName + "\n";
 
                 for (int j = 0; j < retrieve2.size(); j++) {
                     String s = retrieve2.get(j).toString();
@@ -207,9 +216,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             // 检查表3的数据
             case R.id.check3:
 
-                ArrayList<Table3> retrieve3 = EasySQL.with().use(trim).retrieve(Table3.class);
+                ArrayList<NormalTable2> retrieve3 = EasySQL.with(this).use(dbName).retrieve(NormalTable2.class);
 
-                String result3 = "当前数据库：" + trim + "\n";
+                String result3 = "当前数据库：" + dbName + "\n";
 
                 for (int j = 0; j < retrieve3.size(); j++) {
                     String s = retrieve3.get(j).toString();
@@ -222,7 +231,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             // 检查数据库列表
             case R.id.checkdb:
-                Set<String> strings = EasySQL.with().listName();
+                Set<String> strings = EasySQL.with(this).listName();
 
                 String dbList = "";
 
@@ -231,6 +240,44 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
 
                 show.setText(dbList);
+
+                break;
+
+            // 修改表中的数据
+            case R.id.update:
+
+                TypeEntity typeEntity1 = new TypeEntity();
+
+                typeEntity1.set_bit(true);
+                byte b1 = 1;
+                typeEntity1.set_byte(b1);
+                typeEntity1.set_double(1.0);
+                typeEntity1.set_float(1.0f);
+                typeEntity1.set_int(1);
+                typeEntity1.set_long(1l);
+                short i1 = 1;
+                typeEntity1.set_short(i1);
+                typeEntity1.set_string("1");
+                byte[] bytes1 = {1, 1, 1};
+                typeEntity1.setBytes(bytes1);
+
+                EasySQL.with(this).use(dbName).update(typeEntity1, "_short = ?", "2");
+
+                break;
+
+            // 清空表中所有数据
+            case R.id.clear:
+                EasySQL.with(this).use(dbName).clearTable(TypeEntity.class);
+                break;
+
+            // 获取指定数据库中的所有表
+            case R.id.tableList:
+                ArrayList<String> strings1 = EasySQL.with(this).use(dbName).tableList();
+                String sum = "";
+                for (int j = 0; j < strings1.size(); j++) {
+                    sum += strings1.get(j) + "\n";
+                }
+                show.setText(sum);
 
                 break;
         }
