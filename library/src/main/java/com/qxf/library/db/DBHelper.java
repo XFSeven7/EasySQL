@@ -95,6 +95,30 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     /**
+     * 获取指定数据库中所有的表
+     *
+     * @return 表集合
+     */
+    public ArrayList<String> tableList() {
+
+        Cursor cursor = db.query("sqlite_master", null, "type = ?", new String[]{"table"}, null, null, null);
+
+        ArrayList<String> data = new ArrayList<>();
+
+        if (cursor.moveToFirst()) {
+
+            while (cursor.moveToNext()) {
+                String _string = cursor.getString(cursor.getColumnIndex("name"));
+                data.add(_string);
+            }
+
+        }
+
+        return data;
+
+    }
+
+    /**
      * 保存数据
      *
      * @param entity
