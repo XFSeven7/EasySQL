@@ -18,7 +18,7 @@ allprojects {
 
 ```
 dependencies {
-    implementation 'com.github.qixuefeng:EasySQL:0.0.1'
+    implementation 'com.github.qixuefeng:EasySQL:0.0.2'
 }
 ```
 
@@ -78,6 +78,7 @@ int
 ```
 EasySQL.with(context).use(dbName).createTable(表实体.class) // 默认带自增长ID
 EasySQL.with(context).use(dbName).createTable(表实体.class, boolean hasID) // 是否携带ID
+EasySQL.with(context).use(dbName).createTable(表实体.class, 表实体.class, 表实体.class, ... ) // 是否携带ID
 ```
 
  - **删除表**
