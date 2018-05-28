@@ -135,7 +135,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             // 创建表
             case R.id.createTable:
-                EasySQL.with(this).use(dbName).createTable(TypeEntity.class).createTable(NormalTable1.class).createTable(NormalTable2.class);
+//                EasySQL.with(this).use(dbName).createTable(TypeEntity.class).createTable(NormalTable1.class).createTable(NormalTable2.class);
+                EasySQL.with(this).use(dbName).createTable(TypeEntity.class, NormalTable1.class, NormalTable2.class);
                 break;
 
             // 删除表

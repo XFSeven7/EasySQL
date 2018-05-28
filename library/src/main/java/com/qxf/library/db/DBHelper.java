@@ -71,6 +71,20 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     /**
+     * 连续创建表
+     *
+     * @param classes 数据库表，属性名字代表表中的的字段
+     * @return 数据库操作类
+     */
+    @SafeVarargs
+    public final DBHelper createTable(Class<? extends EasyTable>... classes) {
+        for (Class<? extends EasyTable> aClass : classes) {
+            createTable(aClass);
+        }
+        return this;
+    }
+
+    /**
      * 创建表
      *
      * @param classzz   类表
