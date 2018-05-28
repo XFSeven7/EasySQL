@@ -168,7 +168,7 @@ public class DBHelper extends SQLiteOpenHelper {
      *
      * @param entity
      */
-    public void save(EasyEntity entity) {
+    public DBHelper save(EasyEntity entity) {
 
         for (int i = 0; i < entity.getDatas().size(); i++) {
 
@@ -184,6 +184,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
         }
 
+        return this;
+
     }
 
     /**
@@ -194,7 +196,7 @@ public class DBHelper extends SQLiteOpenHelper {
      * @param whereArgs   限制条件
      * @param <T>         the EasyTable
      */
-    public <T extends EasyTable> void update(T t, String whereClause, String... whereArgs) {
+    public <T extends EasyTable> DBHelper update(T t, String whereClause, String... whereArgs) {
 
         String tableName = t.getClass().getSimpleName();
 
@@ -203,6 +205,7 @@ public class DBHelper extends SQLiteOpenHelper {
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
+        return this;
     }
 
 
@@ -224,13 +227,14 @@ public class DBHelper extends SQLiteOpenHelper {
      *
      * @param classzz 类表
      */
-    public void clearTable(Class<? extends EasyTable> classzz) {
+    public DBHelper clearTable(Class<? extends EasyTable> classzz) {
         try {
             db.execSQL(EasySQLConstants.SQL_DELETE + EasySQLConstants.SQL_SPACE + classzz.getSimpleName());
         } catch (SQLException e) {
             Log.e(TAG, "clearTable: " + classzz.getSimpleName() + "表不存在");
             e.printStackTrace();
         }
+        return this;
     }
 
     /**
@@ -276,7 +280,7 @@ public class DBHelper extends SQLiteOpenHelper {
      * @param whereArgs   限制
      * @param <T>         the EasyTable
      */
-    public <T extends EasyTable> void delete(Class<T> classzz, String whereClause, String... whereArgs) {
+    public <T extends EasyTable> DBHelper delete(Class<T> classzz, String whereClause, String... whereArgs) {
 
         try {
             db.delete(classzz.getSimpleName(), whereClause, whereArgs);
@@ -284,6 +288,7 @@ public class DBHelper extends SQLiteOpenHelper {
             Log.e(TAG, "delete: " + classzz.getSimpleName() + "表不存在");
             e.printStackTrace();
         }
+        return this;
     }
 
 }
