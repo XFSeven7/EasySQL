@@ -18,7 +18,7 @@ public class EasyEntity {
         return this;
     }
 
-    public EasyEntity addAll(ArrayList<EasyTable> ts) {
+    public EasyEntity addAll(ArrayList<? extends EasyTable> ts) {
         datas.addAll(ts);
         return this;
     }

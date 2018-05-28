@@ -172,6 +172,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 EasySQL.with(this).use(dbName).save(table1EasyEntity);
 
+                //-------------------- 修复 2018.5.28 11:14 ------------------
+
+//                EasyEntity easyEntity = new EasyEntity();
+//
+//                TypeEntity typeEntity1 = new TypeEntity();
+//
+//                ArrayList<TypeEntity> typeEntities = new ArrayList<>();
+//                typeEntities.add(typeEntity1);
+//                typeEntities.add(typeEntity1);
+//                typeEntities.add(typeEntity1);
+//
+//                easyEntity.addAll(typeEntities); 修复前此处有错
+//
+//                EasySQL.with(this).use(dbName).save(easyEntity);
+
+
                 break;
 
             // 给表2存储数据
