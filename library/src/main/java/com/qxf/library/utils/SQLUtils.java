@@ -235,7 +235,7 @@ public class SQLUtils {
 
         ArrayList<String> resultSQL = new ArrayList<>();
 
-        String startSQL = "Alter table " + classzz.getSimpleName().toLowerCase() + " ";
+        String startSQL = EasySQLConstants.SQL_ALTER + EasySQLConstants.SQL_SPACE + classzz.getSimpleName().toLowerCase() + EasySQLConstants.SQL_SPACE;
 
         // 让类表中的属性都能正常访问 -----------------------------------
 
@@ -270,7 +270,7 @@ public class SQLUtils {
 
         for (Field declaredField : declaredFields) {
 
-            String filed = startSQL + "add ";
+            String filed = startSQL + EasySQLConstants.SQL_ADD + EasySQLConstants.SQL_SPACE;
 
             String s = declaredField.getType().toString();
             String name = declaredField.getName();
@@ -280,23 +280,23 @@ public class SQLUtils {
             }
 
             if (TextUtils.equals(s, EasySQLConstants.TYPE_BYTE)) {
-                filed += name + " " + EasySQLConstants.SQL_BYTE;
+                filed += name + EasySQLConstants.SQL_SPACE + EasySQLConstants.SQL_BYTE;
             } else if (TextUtils.equals(s, EasySQLConstants.TYPE_LONG)) {
-                filed += name + " " + EasySQLConstants.SQL_LONG;
+                filed += name + EasySQLConstants.SQL_SPACE + EasySQLConstants.SQL_LONG;
             } else if (TextUtils.equals(s, EasySQLConstants.TYPE_FLOAT)) {
-                filed += name + " " + EasySQLConstants.SQL_FLOAT;
+                filed += name + EasySQLConstants.SQL_SPACE + EasySQLConstants.SQL_FLOAT;
             } else if (TextUtils.equals(s, EasySQLConstants.TYPE_SHORT)) {
-                filed += name + " " + EasySQLConstants.SQL_SHORT;
+                filed += name + EasySQLConstants.SQL_SPACE + EasySQLConstants.SQL_SHORT;
             } else if (TextUtils.equals(s, EasySQLConstants.TYPE_BYTE_ARR)) {
-                filed += name + " " + EasySQLConstants.SQL_BYTE_ARR;
+                filed += name + EasySQLConstants.SQL_SPACE + EasySQLConstants.SQL_BYTE_ARR;
             } else if (TextUtils.equals(s, EasySQLConstants.TYPE_DOUBLE)) {
-                filed += name + " " + EasySQLConstants.SQL_DOUBLE;
+                filed += name + EasySQLConstants.SQL_SPACE + EasySQLConstants.SQL_DOUBLE;
             } else if (TextUtils.equals(s, EasySQLConstants.TYPE_STRING)) {
-                filed += name + " " + EasySQLConstants.SQL_TEXT;
+                filed += name + EasySQLConstants.SQL_SPACE + EasySQLConstants.SQL_TEXT;
             } else if (TextUtils.equals(s, EasySQLConstants.TYPE_BOOLEAN)) {
-                filed += name + " " + EasySQLConstants.SQL_BOOLEAN;
+                filed += name + EasySQLConstants.SQL_SPACE + EasySQLConstants.SQL_BOOLEAN;
             } else if (TextUtils.equals(s, EasySQLConstants.TYPE_INT)) {
-                filed += name + " " + EasySQLConstants.SQL_INT;
+                filed += name + EasySQLConstants.SQL_SPACE + EasySQLConstants.SQL_INT;
             }
 
             resultSQL.add(filed);
@@ -316,8 +316,8 @@ public class SQLUtils {
      */
     private static ArrayList<String> getMoreData(ArrayList<String> oldData, ArrayList<String> newData) {
 
-        oldData.remove("easysql_id");
-        newData.remove("easysql_id");
+        oldData.remove(EasySQLConstants.DEFAULT_ID);
+        newData.remove(EasySQLConstants.DEFAULT_ID);
 
         ArrayList<String> moreList = new ArrayList<>();
 
@@ -340,8 +340,8 @@ public class SQLUtils {
      */
     private static ArrayList<String> getLostData(ArrayList<String> oldData, ArrayList<String> newData) {
 
-        oldData.remove("easysql_id");
-        newData.remove("easysql_id");
+        oldData.remove(EasySQLConstants.DEFAULT_ID);
+        newData.remove(EasySQLConstants.DEFAULT_ID);
 
         ArrayList<String> moreList = new ArrayList<>();
 

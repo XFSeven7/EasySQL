@@ -31,7 +31,9 @@ public class EasySQLConstants {
 
     public static final String SQL_TABLE = "create table if not exists";
 
-    public static final String SQL_AUTO_ID = "easysql_id integer primary key autoincrement,";
+    public static final String DEFAULT_ID = "easysql_id";
+
+    public static final String SQL_AUTO_ID = DEFAULT_ID + " integer primary key autoincrement,";
 
     public static final String SQL_DEFAULT_NAME = "easysql";
 
@@ -39,6 +41,8 @@ public class EasySQLConstants {
 
     public static final String SQL_DROP = "drop table";
     public static final String SQL_DELETE = "delete from";
+    public static final String SQL_ALTER = "Alter table";
+    public static final String SQL_ADD = "add";
 
     public static final String SQL_LEFT = "(";
     public static final String SQL_RIGHT = ")";
