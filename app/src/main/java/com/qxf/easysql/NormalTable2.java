@@ -6,13 +6,17 @@ public class NormalTable2 extends EasyTable {
 
     private int id;
     private String name;
+    private int newField;
 
     public NormalTable2() {
     }
 
-    public NormalTable2(int id, String name) {
-        this.id = id;
-        this.name = name;
+    public int getNewField() {
+        return newField;
+    }
+
+    public void setNewField(int newField) {
+        this.newField = newField;
     }
 
     public int getId() {
@@ -31,11 +35,4 @@ public class NormalTable2 extends EasyTable {
         this.name = name;
     }
 
-    @Override
-    public String toString() {
-        return "Table3{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
-    }
 }

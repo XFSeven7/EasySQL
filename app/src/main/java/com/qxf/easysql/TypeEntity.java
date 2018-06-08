@@ -19,6 +19,8 @@ public class TypeEntity extends EasyTable {
     private boolean _bit;
     private int _int;
 
+    private int newField;
+
     public TypeEntity() {
     }
 
@@ -32,6 +34,18 @@ public class TypeEntity extends EasyTable {
         this._string = _string;
         this._bit = _bit;
         this._int = _int;
+    }
+
+    public boolean is_bit() {
+        return _bit;
+    }
+
+    public int getNewField() {
+        return newField;
+    }
+
+    public void setNewField(int newField) {
+        this.newField = newField;
     }
 
     public byte get_byte() {

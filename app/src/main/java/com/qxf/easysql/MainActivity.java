@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button update;
     private Button clear;
     private Button tableList;
+    private Button updateDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,6 +115,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         clear.setOnClickListener(this);
         tableList = (Button) findViewById(R.id.tableList);
         tableList.setOnClickListener(this);
+        updateDB = (Button) findViewById(R.id.updateDB);
+        updateDB.setOnClickListener(this);
     }
 
     @Override
@@ -135,7 +138,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             // 创建表
             case R.id.createTable:
-//                EasySQL.with(this).use(dbName).createTable(TypeEntity.class).createTable(NormalTable1.class).createTable(NormalTable2.class);
+//                EasySQL.with(this).use(dbName)
+//                        .createTable(TypeEntity.class)
+//                        .createTable(NormalTable1.class)
+//                        .createTable(NormalTable2.class);
                 EasySQL.with(this).use(dbName).createTable(TypeEntity.class, NormalTable1.class, NormalTable2.class);
                 break;
 
@@ -172,22 +178,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 EasySQL.with(this).use(dbName).save(table1EasyEntity);
 
-                //-------------------- 修复 2018.5.28 11:14 ------------------
-
-//                EasyEntity easyEntity = new EasyEntity();
-//
-//                TypeEntity typeEntity1 = new TypeEntity();
-//
-//                ArrayList<TypeEntity> typeEntities = new ArrayList<>();
-//                typeEntities.add(typeEntity1);
-//                typeEntities.add(typeEntity1);
-//                typeEntities.add(typeEntity1);
-//
-//                easyEntity.addAll(typeEntities); 修复前此处有错
-//
-//                EasySQL.with(this).use(dbName).save(easyEntity);
-
-
                 break;
 
             // 给表2存储数据
@@ -199,7 +189,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             // 给表3存储数据
             case R.id.save3:
-                EasySQL.with(this).use(dbName).save(new EasyEntity().add(new NormalTable2(4, "李四")).add(new NormalTable2(5, "王五")));
+                NormalTable2 normalTable2 = new NormalTable2();
+//                normalTable2.setAa("111");
+
+                NormalTable2 normalTable21 = new NormalTable2();
+//                normalTable21.setAa1("1111");
+
+                EasySQL.with(this).use(dbName).save(new EasyEntity().add(normalTable2).add(normalTable21));
                 break;
 
             // 检查表1的数据
@@ -301,6 +297,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 show.setText(sum);
 
                 break;
+
+            // 更新数据库
+            case R.id.updateDB:
+                EasySQL.with(this).updateAllTable();
+                break;
+
         }
     }
 

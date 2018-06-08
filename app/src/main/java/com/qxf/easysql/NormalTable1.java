@@ -6,6 +6,7 @@ public class NormalTable1 extends EasyTable {
 
     private String name;
     private int age;
+    private int newField;
 
     public NormalTable1() {
     }
@@ -13,6 +14,14 @@ public class NormalTable1 extends EasyTable {
     public NormalTable1(String name, int age) {
         this.name = name;
         this.age = age;
+    }
+
+    public int getNewField() {
+        return newField;
+    }
+
+    public void setNewField(int newField) {
+        this.newField = newField;
     }
 
     public String getName() {
