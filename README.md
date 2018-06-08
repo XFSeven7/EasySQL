@@ -56,6 +56,40 @@ EasySQL.with(context).listName();
 EasySQL.with(context).use(dbName).tableList()
 ```
 
+ - **更新数据库**（给数据库中的表增加字段）
+
+使用步骤如下，
+
+假设原来的表为：
+
+```
+public class NormalTable1 extends EasyTable {
+    private String name;
+    private int age;
+}
+```
+若要新增字段，直接在原来的表中新增字段：
+
+```
+public class NormalTable1 extends EasyTable {
+    private String name;
+    private int age;
+    private int newField;
+}
+```
+之后只需调用
+
+```
+// 更新所有数据库中的所有表
+EasySQL.with(this).updateAllTable();
+```
+或者
+
+```
+// 只更新某个数据库中的所有表：
+EasySQL.with(this).updateAllTable(dbName);
+```
+
 表操作
 ---
 
