@@ -3,6 +3,7 @@ package com.qxf.library;
 import android.annotation.SuppressLint;
 import android.content.Context;
 
+import com.qxf.library.constant.EasySQLConstants;
 import com.qxf.library.db.DBHelper;
 import com.qxf.library.db.EasyTable;
 import com.qxf.library.utils.SQLUtils;
@@ -83,7 +84,7 @@ public class EasySQL {
     /**
      * 更新数据库中所有表
      *
-     * @param dbName
+     * @param dbName 数据库名字
      */
     public EasySQL updateAllTable(String dbName) {
 
@@ -98,6 +99,23 @@ public class EasySQL {
             }
         }
 
+        return this;
+    }
+
+    /**
+     * 更新所有数据库
+     *
+     * @return 本类的单例
+     */
+    public EasySQL updateAllTable() {
+        Set<String> dbNames = listName();
+        for (String name : dbNames) {
+            boolean has = name.endsWith(EasySQLConstants.SQL_END_TABLE);
+            if (has) {
+                name = name.replace(EasySQLConstants.SQL_END_TABLE, "");
+            }
+            updateAllTable(name);
+        }
         return this;
     }
 
