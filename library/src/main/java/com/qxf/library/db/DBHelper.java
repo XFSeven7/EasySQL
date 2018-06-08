@@ -15,6 +15,7 @@ import com.qxf.library.utils.SQLUtils;
 import com.qxf.library.utils.SharedPreferencesUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -60,7 +61,15 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+    }
 
+    /**
+     * 更新表
+     *
+     * @param sql 新增列
+     */
+    public void updateTable(String sql) {
+        db.execSQL(sql);
     }
 
     /**
@@ -153,6 +162,40 @@ public class DBHelper extends SQLiteOpenHelper {
      */
     public boolean deleteDatabase(String dbName) {
         return context.deleteDatabase(dbName);
+    }
+
+    /**
+     * 获取类表
+     *
+     * @return 类表 列表
+     */
+    public ArrayList<String> tableClassList() {
+
+        Set<String> stringSet = SharedPreferencesUtils.getStringSet(EasySQLConstants.EASYSQL_SHARED, name, new HashSet<String>());
+
+        ArrayList<String> classTableList = new ArrayList<>();
+
+        classTableList.addAll(stringSet);
+
+        return classTableList;
+    }
+
+    /**
+     * 获取表中所有字段
+     *
+     * @param table 指定表
+     * @return 以集合形式返回所有字段
+     */
+    public ArrayList<String> tableFieldsList(Class<? extends EasyTable> table) {
+
+        String simpleName = table.getSimpleName();
+
+        Cursor c = db.rawQuery("SELECT * FROM " + simpleName, null);
+
+        String[] columnNames = c.getColumnNames();
+
+        return new ArrayList<>(Arrays.asList(columnNames));
+
     }
 
     /**

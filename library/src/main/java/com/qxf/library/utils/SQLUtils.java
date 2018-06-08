@@ -226,29 +226,133 @@ public class SQLUtils {
 
     }
 
+    /**
+     * @param classzz   映射表
+     * @param oldFields 原始表的字段
+     * @return 增加字段的SQL语句的集合
+     */
+    public static ArrayList<String> getUpdateSQL(Class<? extends EasyTable> classzz, ArrayList<String> oldFields) {
+
+        ArrayList<String> resultSQL = new ArrayList<>();
+
+        String startSQL = "Alter table " + classzz.getSimpleName().toLowerCase() + " ";
+
+        // 让类表中的属性都能正常访问 -----------------------------------
+
+        Field[] declaredFields = classzz.getDeclaredFields();
+
+        for (Field f : declaredFields) {
+            f.setAccessible(true);
+        }
+
+        // 现在的表的字段 ---------------------------------------------
+
+        ArrayList<String> nowFields = new ArrayList<>();
+
+        for (Field f : declaredFields) {
+            String field = f.toString().substring(f.toString().lastIndexOf(".") + 1);         //取出属性名称
+            nowFields.add(field);
+        }
+
+        // 处理失去的字段 ----------------------------------------------
+
+        ArrayList<String> lostData = getLostData(oldFields, nowFields);
+
+        for (int i = 0; i < lostData.size(); i++) {
+            String s = lostData.get(i);
+            String dropSQL = startSQL + "DROP " + s;
+//            resultSQL.add(dropSQL);// TODO 删除字段 还没有找到很好的方法来解决这个问题 = =！
+        }
+
+        // 增加多出的字段 ----------------------------------------------
+
+        ArrayList<String> moreData = getMoreData(oldFields, nowFields);
+
+        for (Field declaredField : declaredFields) {
+
+            String filed = startSQL + "add ";
+
+            String s = declaredField.getType().toString();
+            String name = declaredField.getName();
+
+            if (!moreData.contains(name)) {
+                continue;
+            }
+
+            if (TextUtils.equals(s, EasySQLConstants.TYPE_BYTE)) {
+                filed += name + " " + EasySQLConstants.SQL_BYTE;
+            } else if (TextUtils.equals(s, EasySQLConstants.TYPE_LONG)) {
+                filed += name + " " + EasySQLConstants.SQL_LONG;
+            } else if (TextUtils.equals(s, EasySQLConstants.TYPE_FLOAT)) {
+                filed += name + " " + EasySQLConstants.SQL_FLOAT;
+            } else if (TextUtils.equals(s, EasySQLConstants.TYPE_SHORT)) {
+                filed += name + " " + EasySQLConstants.SQL_SHORT;
+            } else if (TextUtils.equals(s, EasySQLConstants.TYPE_BYTE_ARR)) {
+                filed += name + " " + EasySQLConstants.SQL_BYTE_ARR;
+            } else if (TextUtils.equals(s, EasySQLConstants.TYPE_DOUBLE)) {
+                filed += name + " " + EasySQLConstants.SQL_DOUBLE;
+            } else if (TextUtils.equals(s, EasySQLConstants.TYPE_STRING)) {
+                filed += name + " " + EasySQLConstants.SQL_TEXT;
+            } else if (TextUtils.equals(s, EasySQLConstants.TYPE_BOOLEAN)) {
+                filed += name + " " + EasySQLConstants.SQL_BOOLEAN;
+            } else if (TextUtils.equals(s, EasySQLConstants.TYPE_INT)) {
+                filed += name + " " + EasySQLConstants.SQL_INT;
+            }
+
+            resultSQL.add(filed);
+
+        }
+
+        return resultSQL;
+
+    }
+
+    /**
+     * 两个集合做对比，取出多余的数据
+     *
+     * @param oldData 原集合
+     * @param newData 新集合
+     * @return 多余的数据
+     */
+    private static ArrayList<String> getMoreData(ArrayList<String> oldData, ArrayList<String> newData) {
+
+        oldData.remove("easysql_id");
+        newData.remove("easysql_id");
+
+        ArrayList<String> moreList = new ArrayList<>();
+
+        for (int i = 0; i < newData.size(); i++) {
+            if (!oldData.contains(newData.get(i))) {
+                moreList.add(newData.get(i));
+            }
+        }
+
+        return moreList;
+
+    }
+
+    /**
+     * 两个集合做对比，取出丢失的数据
+     *
+     * @param oldData 原集合
+     * @param newData 新集合
+     * @return 丢失的数据
+     */
+    private static ArrayList<String> getLostData(ArrayList<String> oldData, ArrayList<String> newData) {
+
+        oldData.remove("easysql_id");
+        newData.remove("easysql_id");
+
+        ArrayList<String> moreList = new ArrayList<>();
+
+        for (int i = 0; i < oldData.size(); i++) {
+            if (!newData.contains(oldData.get(i))) {
+                moreList.add(oldData.get(i));
+            }
+        }
+
+        return moreList;
+
+    }
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

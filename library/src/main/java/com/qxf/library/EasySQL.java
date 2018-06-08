@@ -4,8 +4,11 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 
 import com.qxf.library.db.DBHelper;
+import com.qxf.library.db.EasyTable;
+import com.qxf.library.utils.SQLUtils;
 import com.qxf.library.utils.SharedPreferencesUtils;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 /**
@@ -75,6 +78,46 @@ public class EasySQL {
             DBRepertory.getInstance(mContext).add(name, mContext);
         }
         return DBRepertory.getInstance(mContext).get(name);
+    }
+
+    /**
+     * 更新数据库中所有表
+     *
+     * @param dbName
+     */
+    public EasySQL updateAllTable(String dbName) {
+
+        ArrayList<String> tableClassList = use(dbName).tableClassList();
+
+        for (int i = 0; i < tableClassList.size(); i++) {
+            try {
+                Class<? extends EasyTable> tableClass = (Class<? extends EasyTable>) Class.forName(tableClassList.get(i));
+                updateTable(tableClass, dbName);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return this;
+    }
+
+    /**
+     * 更新数据库
+     *
+     * @param tableClass 待更新的表
+     * @param dbName     数据库名
+     */
+    private void updateTable(Class<? extends EasyTable> tableClass, String dbName) {
+
+        // 原始表的字段
+        ArrayList<String> tableFieldsList = use(dbName).tableFieldsList(tableClass);
+
+        ArrayList<String> updateSQL = SQLUtils.getUpdateSQL(tableClass, tableFieldsList);
+
+        for (String s : updateSQL) {
+            use(dbName).updateTable(s);
+        }
+
     }
 
     /**
