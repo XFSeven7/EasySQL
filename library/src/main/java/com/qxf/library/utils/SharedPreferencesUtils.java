@@ -3,6 +3,7 @@ package com.qxf.library.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class SharedPreferencesUtils {
@@ -184,18 +185,22 @@ public class SharedPreferencesUtils {
      */
     public static void putStringSet(String name, String key, Set<String> values) {
         throwInit();
-        clear(name);
+        clearSet(name, key);
         SharedPreferences sp = mContext.getSharedPreferences(name, Context.MODE_PRIVATE);
         SharedPreferences.Editor edit = sp.edit();
         edit.putStringSet(key, values);
         edit.apply();
     }
 
-    public static void clear(String name) {
+    public static void clearSet(String name, String key) {
         throwInit();
         SharedPreferences sp = mContext.getSharedPreferences(name, Context.MODE_PRIVATE);
         SharedPreferences.Editor edit = sp.edit();
-        edit.clear().apply();
+        Set<String> stringSet = sp.getStringSet(key, null);
+        if (stringSet != null) {
+            edit.putStringSet(key, new HashSet<String>());
+        }
+        edit.apply();
     }
 
     /**

@@ -48,7 +48,13 @@ public class EasySQLConstants {
 
     // ------------------- shared常量 ------------------------------
 
+    /**
+     * 存放数据库名字的shared文件名字
+     */
     public static final String EASYSQL_SHARED = "easysql";
+    /**
+     * 存放数据库名字的shared文件名字 key
+     */
     public static final String EASYSQL_SHARED_DB = "easysql_shared_db";
 
 

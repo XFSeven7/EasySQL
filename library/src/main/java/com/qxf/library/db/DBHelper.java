@@ -12,8 +12,11 @@ import android.util.Log;
 
 import com.qxf.library.constant.EasySQLConstants;
 import com.qxf.library.utils.SQLUtils;
+import com.qxf.library.utils.SharedPreferencesUtils;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * 数据库操作类
@@ -118,9 +121,28 @@ public class DBHelper extends SQLiteOpenHelper {
         if (TextUtils.equals("table", tableName.toLowerCase())) {
             throw new SQLiteException("表名不能为table");
         }
+        // 保存类表的类信息
+        saveTable(classzz);
+
         String tableSQL = SQLUtils.getTableSQL(classzz, tableName, hasID);
         db.execSQL(tableSQL);
         return this;
+    }
+
+    /**
+     * 保存类表的类信息
+     *
+     * @param classzz 类表
+     */
+    private void saveTable(Class<? extends EasyTable> classzz) {
+
+        // 得到数据库下所有的表
+        Set<String> dbTable = SharedPreferencesUtils.getStringSet(EasySQLConstants.EASYSQL_SHARED, name, new HashSet<String>());
+
+        dbTable.add(classzz.getName());
+
+        SharedPreferencesUtils.putStringSet(EasySQLConstants.EASYSQL_SHARED, name, dbTable);
+
     }
 
     /**
