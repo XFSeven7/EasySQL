@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button clear;
     private Button tableList;
     private Button updateDB;
+    private Button chackOrder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,6 +118,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tableList.setOnClickListener(this);
         updateDB = (Button) findViewById(R.id.updateDB);
         updateDB.setOnClickListener(this);
+        chackOrder = (Button) findViewById(R.id.chackOrder);
+        chackOrder.setOnClickListener(this);
     }
 
     @Override
@@ -183,7 +186,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             // 给表2存储数据
             case R.id.save2:
                 EasyEntity easyEntity = new EasyEntity();
-                easyEntity.add(new NormalTable1("张三", 18));
+                easyEntity.add(new NormalTable1("张三", 18)).add(new NormalTable1("李四", 17));
                 EasySQL.with(this).use(dbName).save(easyEntity);
                 break;
 
@@ -303,6 +306,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 EasySQL.with(this).updateAllTable();
                 break;
 
+            case R.id.chackOrder:
+                ArrayList<NormalTable1> age = EasySQL.with(this).use(dbName).retrieve(NormalTable1.class, "age", true);
+                String result4 = "当前数据库：" + dbName + "\n";
+
+                for (int j = 0; j < age.size(); j++) {
+                    String s = age.get(j).toString();
+                    result4 += s + "\n";
+                }
+
+                show.setText(result4);
+                break;
         }
     }
 

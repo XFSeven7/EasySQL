@@ -119,30 +119,52 @@
 
     </LinearLayout>
 
-
-    <Button
-        android:id="@+id/deleteData"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="删除某些数据" />
+        android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/update"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="修改(表1的数据)" />
+        <Button
+            android:id="@+id/deleteData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="删除某些数据" />
 
-    <Button
-        android:id="@+id/clear"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="清空表中所有数据(表1)" />
+        <Button
+            android:id="@+id/update"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="修改(表1的数据)" />
+
+        <Button
+            android:id="@+id/clear"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="清空表中所有数据(表1)" />
+
+    </LinearLayout>
+
 
     <Button
         android:id="@+id/tableList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="获取指定数据库中的所有表" />
+
+    <Button
+        android:id="@+id/updateDB"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="更新数据库" />
+
+    <Button
+        android:id="@+id/chackOrder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="排序查询表2" />
 
     <ScrollView
         android:layout_width="match_parent"
