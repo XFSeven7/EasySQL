@@ -273,7 +273,6 @@ public class DBHelper extends SQLiteOpenHelper {
         return this;
     }
 
-
     /**
      * 删除表
      *
@@ -310,15 +309,33 @@ public class DBHelper extends SQLiteOpenHelper {
      * @return 集合数据
      */
     public <T extends EasyTable> ArrayList<T> retrieve(Class<T> classzz) {
+        return retrieve(classzz, null, false);
+    }
+
+    /**
+     * 得到指定表中数据 排序（升序或者降序）
+     *
+     * @param classzz 指定表
+     * @param field   使用哪个字段排序
+     * @param isAsc   是否升序，否则降序
+     * @param <T>     数据库表
+     * @return 升序或者降序后的集合数据
+     */
+    public <T extends EasyTable> ArrayList<T> retrieve(Class<T> classzz, String field, boolean isAsc) {
 
         ArrayList<T> query = new ArrayList<>();
 
         Cursor cursor = null;
 
         try {
-            cursor = db.query(classzz.getSimpleName().toLowerCase(), null, null, null, null, null, null);
+
+            String orderBy = field + " asc";
+            if (!isAsc) orderBy = field + " desc";
+            if (TextUtils.isEmpty(field)) orderBy = null;
+
+            cursor = db.query(classzz.getSimpleName().toLowerCase(), null, null, null, null, null, orderBy);
         } catch (SQLiteException e) {
-            Log.e(TAG, "retrieve: 该表不存在");
+            Log.e(TAG, "retrieve: 该表或者该字段不存在");
             return query;
         }
 
@@ -336,6 +353,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return query;
 
     }
+
 
     /**
      * 删除指定表中的数据
