@@ -313,6 +313,18 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     /**
+     * 得到指定表中数据 排序（升序）
+     *
+     * @param classzz 指定表
+     * @param field   使用哪个字段升序
+     * @param <T>     数据库表
+     * @return 升序后的数据的集合数据
+     */
+    public <T extends EasyTable> ArrayList<T> retrieve(Class<T> classzz, String field) {
+        return retrieve(classzz, field, true);
+    }
+
+    /**
      * 得到指定表中数据 排序（升序或者降序）
      *
      * @param classzz 指定表
