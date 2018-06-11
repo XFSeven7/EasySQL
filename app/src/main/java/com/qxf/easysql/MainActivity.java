@@ -306,7 +306,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 EasySQL.with(this).updateAllTable();
                 break;
 
+            // 排序查询
             case R.id.chackOrder:
+
+                /*
+                EasySQL.with(this).use(dbName)
+                        .retrieve(
+                                NormalTable1.class,               // 表名
+                                new String[]{"age，name"},        // 需要被查询的字段
+                                "age=? and name=?",               // 查询条件
+                                new String[]{"18，张三"},          // 条件的值
+                                "age",                            //  根据哪个字段排序
+                                true                              // 是否升序，false为降序
+                        );
+
+                */
+
                 ArrayList<NormalTable1> age = EasySQL.with(this).use(dbName).retrieve(NormalTable1.class, "age", true);
                 String result4 = "当前数据库：" + dbName + "\n";
 
