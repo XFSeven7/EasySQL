@@ -155,6 +155,14 @@ EasySQL.with(this).use(dbName).update(typeEntity1, "_short = ?", "2");
 // 查询表（Table1）中的所有数据
 ArrayList<Table1> retrieve1 = EasySQL.with(context).use(trim).retrieve(Table1.class);
 ```
+排序查询
+
+```
+// 排序查询 升序查询 指定使用哪个字段使用升序查询
+ArrayList<NormalTable1> retrieve1 = EasySQL.with(this).use(dbName).retrieve(NormalTable1.class, "age");
+// 排序查询 ，retrieve(Class<T> 查询表, String 排序字段, boolean 是否升序，false为降序查询)
+ArrayList<NormalTable1> retrieve1 = EasySQL.with(this).use(dbName).retrieve(NormalTable1.class, "age", true);
+```
 
 最后
 --
