@@ -334,18 +334,99 @@ public class DBHelper extends SQLiteOpenHelper {
      * @return 升序或者降序后的集合数据
      */
     public <T extends EasyTable> ArrayList<T> retrieve(Class<T> classzz, String field, boolean isAsc) {
+        return retrieve(classzz, field, isAsc);
+    }
+
+    /**
+     * 查询指定表中的指定字段
+     *
+     * @param classzz 指定表
+     * @param columns 需要被查询的字段
+     * @param <T>     数据库表
+     * @return 数据集合
+     */
+    public <T extends EasyTable> ArrayList<T> retrieve(Class<T> classzz, String[] columns) {
+        return retrieve(classzz, columns, null, null);
+    }
+
+    /**
+     * 得到表中指定的字段 并排序（升序或者降序）
+     *
+     * @param classzz 指定表
+     * @param columns 需要被查询的字段
+     * @param field   使用哪个字段排序
+     * @param isAsc   是否升序，否则降序
+     * @param <T>     数据库表
+     * @return
+     */
+    public <T extends EasyTable> ArrayList<T> retrieve(Class<T> classzz, String[] columns, String field, boolean isAsc) {
+        return retrieve(classzz, columns, null, null, field, isAsc);
+    }
+
+    /**
+     * 得到表中指定的字段 升序
+     *
+     * @param classzz 指定表
+     * @param columns 需要被查询的字段
+     * @param field   使用哪个字段排序
+     * @param <T>     数据库表
+     * @return
+     */
+    public <T extends EasyTable> ArrayList<T> retrieve(Class<T> classzz, String[] columns, String field) {
+        return retrieve(classzz, columns, null, null, field, true);
+    }
+
+    /**
+     * 经过条件筛选后的数据集合 升序
+     *
+     * @param classzz       表
+     * @param columns       需要被查询的字段
+     * @param selection     条件
+     * @param selectionArgs 条件的值
+     * @param <T>           数据库表
+     * @return 经过条件筛选后的数据集合 升序
+     */
+    public <T extends EasyTable> ArrayList<T> retrieve(Class<T> classzz, String[] columns, String selection, String[] selectionArgs) {
+        return retrieve(classzz, columns, selection, selectionArgs, null, true);
+    }
+
+    /**
+     * 经过条件筛选后的数据集合 并排序
+     *
+     * @param classzz       表
+     * @param columns       需要被查询的字段
+     * @param selection     条件
+     * @param selectionArgs 条件的值
+     * @param field         使用哪个字段排序
+     * @param <T>           数据库表
+     * @return 经过条件筛选后的数据集合 并排序
+     */
+    public <T extends EasyTable> ArrayList<T> retrieve(Class<T> classzz, String[] columns, String selection, String[] selectionArgs, String field) {
+        return retrieve(classzz, columns, selection, selectionArgs, field, true);
+    }
+
+    /**
+     * @param classzz       表
+     * @param columns       待查询的字段
+     * @param selection     条件
+     * @param selectionArgs 条件的值
+     * @param field         根据哪个字段排序
+     * @param isAsc         是否为升序
+     * @param <T>           数据库表
+     * @return 返回排序后的并经过条件筛选后的数据集合
+     */
+    public <T extends EasyTable> ArrayList<T> retrieve(Class<T> classzz, String[] columns, String selection, String[] selectionArgs, String field, boolean isAsc) {
+
 
         ArrayList<T> query = new ArrayList<>();
 
         Cursor cursor = null;
 
         try {
-
-            String orderBy = field + " asc";
-            if (!isAsc) orderBy = field + " desc";
+            String orderBy = field + EasySQLConstants.SQL_SPACE + EasySQLConstants.SQL_ASC;
+            if (!isAsc) orderBy = field + EasySQLConstants.SQL_SPACE + EasySQLConstants.SQL_DESC;
             if (TextUtils.isEmpty(field)) orderBy = null;
-
-            cursor = db.query(classzz.getSimpleName().toLowerCase(), null, null, null, null, null, orderBy);
+            cursor = db.query(classzz.getSimpleName().toLowerCase(), columns, selection, selectionArgs, null, null, orderBy);
         } catch (SQLiteException e) {
             Log.e(TAG, "retrieve: 该表或者该字段不存在");
             return query;
@@ -365,7 +446,6 @@ public class DBHelper extends SQLiteOpenHelper {
         return query;
 
     }
-
 
     /**
      * 删除指定表中的数据

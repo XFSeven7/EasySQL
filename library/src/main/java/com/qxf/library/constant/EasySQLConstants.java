@@ -44,6 +44,9 @@ public class EasySQLConstants {
     public static final String SQL_ALTER = "Alter table";
     public static final String SQL_ADD = "add";
 
+    public static final String SQL_ASC = "asc";
+    public static final String SQL_DESC = "desc";
+
     public static final String SQL_LEFT = "(";
     public static final String SQL_RIGHT = ")";
 
