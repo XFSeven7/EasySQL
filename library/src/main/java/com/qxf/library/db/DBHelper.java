@@ -334,7 +334,7 @@ public class DBHelper extends SQLiteOpenHelper {
      * @return 升序或者降序后的集合数据
      */
     public <T extends EasyTable> ArrayList<T> retrieve(Class<T> classzz, String field, boolean isAsc) {
-        return retrieve(classzz, field, isAsc);
+        return retrieve(classzz, null, field, isAsc);
     }
 
     /**
