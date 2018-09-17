@@ -54,7 +54,7 @@ public class EasySQL {
      * @return 是否成功删除
      */
     public boolean deleteDatabase(String dbName) {
-        return DBRepertory.getInstance(mContext).delete(dbName, mContext);
+        return DBRepertory.getInstance(mContext).delete(dbName);
     }
 
     /**
