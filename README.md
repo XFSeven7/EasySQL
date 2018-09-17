@@ -18,7 +18,7 @@ allprojects {
 
 ```
 dependencies {
-     implementation 'com.github.qixuefeng:EasySQL:0.1.2'
+     implementation 'com.github.qixuefeng:EasySQL:0.1.3'
 }
 ```
 
@@ -140,6 +140,8 @@ EasySQL.with(context).use(dbName).save(entity);
 // 后面的两个参数跟Android自带的参数用法基本一样
 EasySQL.with(context).use(dbName).delete(Table1.class, "_short = ?", "2");
 
+// 清空表中所有数据
+EasySQL.with(context).use(dbName).clear(Table1.class);
 ```
 
  - **改**
