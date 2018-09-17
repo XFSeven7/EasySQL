@@ -1,4 +1,4 @@
-package com.qxf.easysql;
+package com.qxf.easysql.activity;
 
 import com.qxf.library.db.EasyTable;
 
@@ -122,7 +122,7 @@ public class TypeEntity extends EasyTable {
 
     @Override
     public String toString() {
-        return "Table1{" +
+        return "StudentTable{" +
                 "_byte=" + _byte +
                 ", _long=" + _long +
                 ", _float=" + _float +
