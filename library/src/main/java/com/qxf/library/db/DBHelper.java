@@ -278,12 +278,13 @@ public class DBHelper extends SQLiteOpenHelper {
      *
      * @param classzz 类表
      */
-    public void deleteTable(Class<? extends EasyTable> classzz) {
+    public DBHelper deleteTable(Class<? extends EasyTable> classzz) {
         try {
             db.execSQL(EasySQLConstants.SQL_DROP + EasySQLConstants.SQL_SPACE + classzz.getSimpleName());
         } catch (SQLException e) {
             Log.e(TAG, "deleteTable: 该表不存在");
         }
+        return this;
     }
 
     /**
@@ -456,7 +457,6 @@ public class DBHelper extends SQLiteOpenHelper {
      * @param <T>         the EasyTable
      */
     public <T extends EasyTable> DBHelper delete(Class<T> classzz, String whereClause, String... whereArgs) {
-
         try {
             db.delete(classzz.getSimpleName(), whereClause, whereArgs);
         } catch (SQLException e) {
@@ -464,6 +464,16 @@ public class DBHelper extends SQLiteOpenHelper {
             e.printStackTrace();
         }
         return this;
+    }
+
+    /**
+     * 清空表中所有数据
+     *
+     * @param classzz 指定表
+     * @param <T>     the EasyTable
+     */
+    public <T extends EasyTable> DBHelper clear(Class<T> classzz) {
+        return delete(classzz, null, null);
     }
 
 }
