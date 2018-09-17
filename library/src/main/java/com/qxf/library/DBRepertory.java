@@ -74,15 +74,24 @@ public class DBRepertory {
      * 删除数据库
      *
      * @param dbName  数据库名字
-     * @param context the context
      * @return 是否删除成功
      */
-    public boolean delete(String dbName, Context context) {
+    public boolean delete(String dbName) {
         fresh();
-        dbName += EasySQLConstants.SQL_END_TABLE;
-        dbList.remove(dbName);
-        removeDB(dbName);
-        return context.deleteDatabase(dbName + EasySQLConstants.SQL_END_TABLE);
+        if (!dbName.endsWith(EasySQLConstants.SQL_END_TABLE)) {
+            dbName += EasySQLConstants.SQL_END_TABLE;
+        }
+
+        boolean isDone = context.deleteDatabase(dbName);
+
+        if (isDone) {
+            dbList.remove(dbName);
+            removeDB(dbName);
+            return true;
+        } else {
+            return false;
+        }
+
     }
 
     /**
@@ -96,12 +105,14 @@ public class DBRepertory {
         if (TextUtils.isEmpty(dbName)) {
             dbName = EasySQLConstants.SQL_DEFAULT_NAME;
         }
-        dbName += EasySQLConstants.SQL_END_TABLE;
+        if (!dbName.endsWith(EasySQLConstants.SQL_END_TABLE)) {
+            dbName += EasySQLConstants.SQL_END_TABLE;
+        }
 
         if (check(dbName, getDB())) {
             return dbList.get(dbName);
         }
-        throw new NullPointerException("该数据库不存在");
+        throw new NullPointerException("该数据库不存在：dbname = " + dbName);
     }
 
     /**
