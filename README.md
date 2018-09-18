@@ -18,7 +18,7 @@ allprojects {
 
 ```
 dependencies {
-     implementation 'com.github.qixuefeng:EasySQL:0.1.3'
+     implementation 'com.github.qixuefeng:EasySQL:0.1.4'
 }
 ```
 
