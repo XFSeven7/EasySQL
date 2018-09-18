@@ -466,14 +466,4 @@ public class DBHelper extends SQLiteOpenHelper {
         return this;
     }
 
-    /**
-     * 清空表中所有数据
-     *
-     * @param classzz 指定表
-     * @param <T>     the EasyTable
-     */
-    public <T extends EasyTable> DBHelper clear(Class<T> classzz) {
-        return delete(classzz, null, null);
-    }
-
 }
