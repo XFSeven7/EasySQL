@@ -14,7 +14,7 @@ import com.qxf.easysql.activity.DBActivity;
 import com.qxf.easysql.adapter.RecycAdapter;
 import com.qxf.library.EasySQL;
 
-import java.util.Set;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * 查看数据库
      */
     private void checkDB() {
-        Set<String> strings = EasySQL.with(this).listName();
+        ArrayList<String> strings = EasySQL.with(this).listName();
         adapter.addAll(strings, true);
     }
 
