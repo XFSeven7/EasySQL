@@ -3,14 +3,12 @@ package com.qxf.library;
 import android.annotation.SuppressLint;
 import android.content.Context;
 
-import com.qxf.library.constant.EasySQLConstants;
 import com.qxf.library.db.DBHelper;
 import com.qxf.library.db.EasyTable;
 import com.qxf.library.utils.SQLUtils;
 import com.qxf.library.utils.SharedPreferencesUtils;
 
 import java.util.ArrayList;
-import java.util.Set;
 
 /**
  * 牛逼哄哄的EasySQL，很多操作都要靠这个类，YEAH!
@@ -44,6 +42,19 @@ public class EasySQL {
      */
     public EasySQL createDB(String name) {
         DBRepertory.getInstance(mContext).add(name, mContext);
+        return this;
+    }
+
+    /**
+     * 创建数据库
+     *
+     * @param names 数据库名字
+     * @return 本类的单例
+     */
+    public EasySQL createDB(String... names) {
+        for (String name : names) {
+            createDB(name);
+        }
         return this;
     }
 
@@ -108,14 +119,13 @@ public class EasySQL {
      * @return 本类的单例
      */
     public EasySQL updateAllTable() {
-        Set<String> dbNames = listName();
-        for (String name : dbNames) {
-            boolean has = name.endsWith(EasySQLConstants.SQL_END_TABLE);
-            if (has) {
-                name = name.replace(EasySQLConstants.SQL_END_TABLE, "");
-            }
-            updateAllTable(name);
+
+        ArrayList<String> dbNames = listName();
+
+        for (int i = 0; i < dbNames.size(); i++) {
+            updateAllTable(dbNames.get(i));
         }
+
         return this;
     }
 
@@ -143,7 +153,7 @@ public class EasySQL {
      *
      * @return 集合展现数据库名字列表
      */
-    public Set<String> listName() {
+    public ArrayList<String> listName() {
         return DBRepertory.getInstance(mContext).listName();
     }
 

@@ -7,6 +7,7 @@ import com.qxf.library.constant.EasySQLConstants;
 import com.qxf.library.db.DBHelper;
 import com.qxf.library.utils.SharedPreferencesUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -142,8 +143,8 @@ public class DBRepertory {
      *
      * @return
      */
-    public Set<String> listName() {
-        return dbList.keySet();
+    public ArrayList<String> listName() {
+        return new ArrayList<>(dbList.keySet());
     }
 
     private void saveDB(String dbName) {
