@@ -511,4 +511,15 @@ public class DBHelper extends SQLiteOpenHelper {
 		return this;
 	}
 
+	/**
+	 * 清除指定表中数据
+	 *
+	 * @param classzz 指定表
+	 * @param <T>     the EasyTable
+	 */
+	public <T extends EasyTable> DBHelper clear(Class<T> classzz) {
+		delete(classzz, "", "");
+		return this;
+	}
+
 }
