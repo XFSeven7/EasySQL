@@ -22,6 +22,8 @@ dependencies {
 }
 ```
 
+新增数据库
+
 
 数据库操作
 ---
@@ -125,14 +127,18 @@ EasySQL.with(context).use(dbName).deleteTable(TypeEntity.class); 删除某数据
 ----
 
  - **增**
+新增的数据保存在EasyEntity实体类中，支持单个实体添加或者集合添加，如果检测到没有该表，则会自动创建表
+	```
+	// 方式1
+	EasyEntity entity = new EasyEntity();
+	Table1 table1 = new Table1(); // 各种set
+	table1EasyEntity.add(table1);
+	EasySQL.with(context).use(dbName).save(entity);
 
-新增的数据需要保存在EasyEntity实体类中，支持响应式添加，支持单个实体添加或者集合添加
-```
-EasyEntity entity = new EasyEntity();
-Table1 table1 = new Table1(); // 各种set
-table1EasyEntity.add(table1);
-EasySQL.with(context).use(dbName).save(entity);
-```
+	// 方式2
+	Table1 table1 = new Table1();
+	EasySQL.with(context).use(dbName).save(table1);
+	```
 
  - **删**
 
